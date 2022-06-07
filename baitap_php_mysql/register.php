@@ -6,18 +6,29 @@ if ($action != false && $action == 'dk') {
     $email = filter_input(INPUT_POST, 'email');
     $matkhau = filter_input(INPUT_POST, 'password');
     $nhaplaimatkhau = filter_input(INPUT_POST, 'repassword');
+    
+    $query = "SELECT username, email FROM users WHERE username='$taikhoan'";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($result);
 
     if (!empty($taikhoan) && !empty($email) && !empty($matkhau)) {
-        if ($matkhau == $nhaplaimatkhau) {
+
+        if($taikhoan == $row['username'] || $email == $row['email'])
+        {echo "Tên tài khoản hoặc Email đã tồn tại";
+        }
+     
+       else if ($matkhau == $nhaplaimatkhau) {
             $query = mysqli_query($conn, "INSERT INTO users (username, email, password) VALUES 
-('$taikhoan', '$email', '$matkhau')");
+    ('$taikhoan', '$email', '$matkhau')");
             echo "Bạn đã đăng ký tài khoản thành công";
         } else
             echo "Mật khẩu và nhập lại mật khẩu không đúng";
-    } 
-    else echo "Tên tài khoản hoặc email đã được sử dụng";
+   
 }
     else echo "Bạn phải nhập đầy đủ thông tin";
+   
+}
+  
 
 
 $dangnhap = filter_input(INPUT_POST, 'dangnhap');
